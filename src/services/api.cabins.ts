@@ -1,4 +1,4 @@
-import type { Cabin } from '../types';
+import { CabinSchema, type Cabin } from '../schemas/cabin.schema';
 import supabase from './supabase';
 
 export async function getCabins(): Promise<Cabin[]> {
@@ -9,5 +9,5 @@ export async function getCabins(): Promise<Cabin[]> {
     throw new Error('Cabins could not be loaded');
   }
 
-  return data;
+  return CabinSchema.array().parse(data);
 }
