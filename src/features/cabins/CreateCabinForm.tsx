@@ -6,15 +6,12 @@ import Button from '../../ui/Button';
 import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { createCabin } from '../../services/api.cabins';
+import { createCabin, type CabinFormValues } from '../../services/api.cabins';
 import toast from 'react-hot-toast';
-import type { Cabin } from '../../schemas/cabin.schema';
 import FormRow from '../../ui/FormRow';
 
-type CreateCabinValues = Omit<Cabin, 'id' | 'created_at'>;
-
 function CreateCabinForm() {
-  const { register, handleSubmit, reset, getValues, formState } = useForm<CreateCabinValues>();
+  const { register, handleSubmit, reset, getValues, formState } = useForm<CabinFormValues>();
   const { errors } = formState;
 
   console.log(errors);
@@ -32,9 +29,8 @@ function CreateCabinForm() {
     onError: error => toast.error(error.message),
   });
 
-  function onSubmit(data: CreateCabinValues) {
-    console.log(data);
-    mutate(data);
+  function onSubmit(data: CabinFormValues) {
+    mutate({ ...data, image: data.image[0] });
   }
 
   /* function onError(errors: FieldErrors<CreateCabinValues>) {
@@ -116,7 +112,14 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow label="Cabin photo" htmlFor="image">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          disabled={isCreating}
+          {...register('image', {
+            required: 'This field is required',
+          })}
+        />
       </FormRow>
 
       <FormRow>
