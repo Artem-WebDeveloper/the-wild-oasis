@@ -9,7 +9,7 @@ import FormRow from '../../ui/FormRow';
 import type { Cabin } from '../../schemas/cabin.schema';
 import type { CabinFormValues } from '../../types/cabin.types';
 import { useCreateCabin } from './useCreateCabin';
-import { useEditCabin } from './useEditCabin';
+import { useUpdateCabin } from './useUpdateCabin';
 
 function CreateCabinForm({
   cabinToEdit = null,
@@ -19,7 +19,7 @@ function CreateCabinForm({
   onSuccess?: () => void;
 }) {
   const { isCreating, createCabin } = useCreateCabin();
-  const { isEditing, editCabin } = useEditCabin();
+  const { isEditing, updateCabin } = useUpdateCabin();
   const isWorking = isCreating || isEditing;
 
   const isEditSession = cabinToEdit !== null;
@@ -37,7 +37,7 @@ function CreateCabinForm({
     const image = data.image instanceof FileList ? data.image[0] : data.image;
 
     if (isEditSession) {
-      editCabin(
+      updateCabin(
         { data: { ...data, image }, id: editId },
         {
           onSuccess: () => onSuccess?.(),

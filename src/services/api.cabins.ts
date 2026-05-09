@@ -24,7 +24,7 @@ export async function deleteCabin(id: number) {
   return data;
 }
 
-export async function createEditCabin(newCabin: CabinPayload, id?: number) {
+export async function createUpdateCabin(newCabin: CabinPayload, id?: number) {
   const { image } = newCabin;
 
   // Пример ссылки на img из хранилища файлов supabase
