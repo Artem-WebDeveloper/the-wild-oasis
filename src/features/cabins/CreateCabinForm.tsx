@@ -11,7 +11,13 @@ import type { CabinFormValues } from '../../types/cabin.types';
 import { useCreateCabin } from './useCreateCabin';
 import { useEditCabin } from './useEditCabin';
 
-function CreateCabinForm({ cabinToEdit = null }: { cabinToEdit?: Cabin | null }) {
+function CreateCabinForm({
+  cabinToEdit = null,
+  onSuccess,
+}: {
+  cabinToEdit?: Cabin | null;
+  onSuccess?: () => void;
+}) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isEditing, editCabin } = useEditCabin();
   const isWorking = isCreating || isEditing;
@@ -34,7 +40,7 @@ function CreateCabinForm({ cabinToEdit = null }: { cabinToEdit?: Cabin | null })
       editCabin(
         { data: { ...data, image }, id: editId },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => onSuccess?.(),
         },
       );
     } else {

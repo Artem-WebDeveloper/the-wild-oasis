@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const CabinSchema = z.object({
   id: z.number(),
   created_at: z.string(),
-  image: z.string().nullable(),
+  image: z.string(),
   description: z
     .string()
     .nullable()

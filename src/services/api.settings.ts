@@ -1,4 +1,7 @@
+import { SettingsSchema, type Settings } from '../schemas/settings.schema';
 import supabase from './supabase';
+
+export type SettingUpdate = Partial<Omit<Settings, 'id' | 'created_at'>>;
 
 export async function getSettings() {
   const { data, error } = await supabase.from('settings').select('*').single();
@@ -7,11 +10,11 @@ export async function getSettings() {
     console.error(error);
     throw new Error('Settings could not be loaded');
   }
-  return data;
+  return SettingsSchema.parse(data);
 }
 
 // We expect a newSetting object that looks like {setting: newValue}
-export async function updateSetting(newSetting) {
+export async function updateSetting(newSetting: SettingUpdate) {
   const { data, error } = await supabase
     .from('settings')
     .update(newSetting)
