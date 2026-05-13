@@ -11,13 +11,12 @@ import type { CabinFormValues } from '../../types/cabin.types';
 import { useCreateCabin } from './useCreateCabin';
 import { useUpdateCabin } from './useUpdateCabin';
 
-function CreateCabinForm({
-  cabinToEdit = null,
-  onSuccess,
-}: {
+type CreateCabinFormProps = {
   cabinToEdit?: Cabin | null;
-  onSuccess?: () => void;
-}) {
+  onCloseModal?: () => void;
+};
+
+function CreateCabinForm({ cabinToEdit = null, onCloseModal }: CreateCabinFormProps) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isEditing, updateCabin } = useUpdateCabin();
   const isWorking = isCreating || isEditing;
@@ -40,7 +39,9 @@ function CreateCabinForm({
       updateCabin(
         { data: { ...data, image }, id: editId },
         {
-          onSuccess: () => onSuccess?.(),
+          onSuccess: () => {
+            onCloseModal?.();
+          },
         },
       );
     } else {
@@ -48,7 +49,10 @@ function CreateCabinForm({
       createCabin(
         { ...data, image },
         {
-          onSuccess: () => reset(),
+          onSuccess: () => {
+            reset();
+            onCloseModal?.();
+          },
         },
       );
     }
@@ -59,7 +63,7 @@ function CreateCabinForm({
   } */
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={handleSubmit(onSubmit)} type={onCloseModal ? 'modal' : 'regular'}>
       <FormRow label="Cabin name" htmlFor="name" error={errors?.name?.message}>
         <Input
           type="text"
@@ -145,7 +149,7 @@ function CreateCabinForm({
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" onClick={() => onCloseModal?.()} type="reset">
           Cancel
         </Button>
         <Button disabled={isWorking}>{isEditSession ? 'Edit cabin' : 'Add new cabin'}</Button>
