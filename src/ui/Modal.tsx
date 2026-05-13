@@ -108,13 +108,13 @@ function Window({ children, name }: WindowType) {
   const { openName, close } = useModal();
 
   // Закрытие по клику вне окна
-  const { modalRef } = useOutsideClick(close);
+  const { ref } = useOutsideClick<HTMLDivElement>(close);
 
   if (name !== openName) return null;
 
   return createPortal(
     <Overlay>
-      <StyledModal ref={modalRef}>
+      <StyledModal ref={ref}>
         <Button onClick={close}>
           <HiXMark />
         </Button>

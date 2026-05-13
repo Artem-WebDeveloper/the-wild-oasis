@@ -1,14 +1,17 @@
 import { useEffect, useRef } from 'react';
 
-function useOutsideClick(handler: () => void, listenCapturing: boolean = true) {
-  const modalRef = useRef<HTMLDivElement>(null);
+function useOutsideClick<T extends HTMLElement>(
+  handler: () => void,
+  listenCapturing: boolean = true,
+) {
+  const ref = useRef<T | null>(null);
 
   useEffect(
     function () {
       function handleClick(e: PointerEvent) {
         if (!(e.target instanceof Node)) return;
 
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
+        if (ref.current && !ref.current.contains(e.target)) {
           handler();
         }
       }
@@ -22,7 +25,7 @@ function useOutsideClick(handler: () => void, listenCapturing: boolean = true) {
     [handler, listenCapturing],
   );
 
-  return { modalRef };
+  return { ref };
 }
 
 export default useOutsideClick;
