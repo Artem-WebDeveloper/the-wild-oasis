@@ -4,6 +4,19 @@ import { HiEllipsisVertical } from 'react-icons/hi2';
 import styled from 'styled-components';
 import useOutsideClick from '../hooks/useOutsideClick';
 
+type PositionElement = {
+  x: number;
+  y: number;
+};
+
+type MenuContextType = {
+  openId: number | null;
+  open: React.Dispatch<React.SetStateAction<number | null>>;
+  close: () => void;
+  position: PositionElement | null;
+  setPosition: React.Dispatch<React.SetStateAction<PositionElement | null>>;
+};
+
 const Menu = styled.div`
   display: flex;
   align-items: center;
@@ -30,7 +43,7 @@ const StyledToggle = styled.button`
 `;
 
 const StyledList = styled.ul<{ position: PositionElement }>`
-  position: fixed;
+  position: absolute;
 
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
@@ -65,19 +78,6 @@ const StyledButton = styled.button`
   }
 `;
 
-type PositionElement = {
-  x: number;
-  y: number;
-};
-
-type MenuContextType = {
-  openId: number | null;
-  open: React.Dispatch<React.SetStateAction<number | null>>;
-  close: () => void;
-  position: PositionElement | null;
-  setPosition: React.Dispatch<React.SetStateAction<PositionElement | null>>;
-};
-
 const MenuContext = createContext<MenuContextType | null>(null);
 
 function useMenu() {
@@ -103,14 +103,13 @@ function Menus({ children }: { children: React.ReactNode }) {
 function Toggle({ id }: { id: number }) {
   const { open, close, openId, setPosition } = useMenu();
 
-  function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
-    if (!(e.target instanceof HTMLElement)) return;
-    const rect = e.target.closest('button')?.getBoundingClientRect();
+  function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    const rect = e.currentTarget.getBoundingClientRect();
     if (!rect) return;
 
     setPosition({
       x: window.innerWidth - rect.width - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      y: rect.y + rect.height + 8 + window.scrollY,
     });
 
     if (openId === null || openId !== id) {
@@ -141,13 +140,13 @@ function List({ id, children }: { id: number; children: React.ReactNode }) {
   );
 }
 
-type ButtonPropsType = {
+type ButtonProps = {
   children: React.ReactNode;
   icon: React.ReactNode;
   onClick?: () => void;
 };
 
-function Button({ children, icon, onClick }: ButtonPropsType) {
+function Button({ children, icon, onClick }: ButtonProps) {
   const { close } = useMenu();
   function handleClick() {
     onClick?.();
