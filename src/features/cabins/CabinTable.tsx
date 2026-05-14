@@ -1,15 +1,21 @@
 import Spinner from '../../ui/Spinner';
 import CabinRow from './CabinRow';
-import { useCabins } from './useCabins';
 import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
+import useFilterCabinTables from './useFilterCabinTables';
+import useSortTableCabins from './useSortTableCabins';
+import Empty from '../../ui/Empty';
 
 function CabinTable() {
-  const { cabins, isLoading } = useCabins();
+  // 1) FILTER
+  const { filteredCabins, isLoading } = useFilterCabinTables();
+  // 2) SORT
+  const sortedCabins = useSortTableCabins(filteredCabins);
 
   if (isLoading) return <Spinner />;
+  if (filteredCabins && !filteredCabins.length) return <Empty resourceName="cabins" />;
 
-  if (cabins)
+  if (sortedCabins)
     return (
       <Menus>
         <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
@@ -22,7 +28,10 @@ function CabinTable() {
             <div></div>
           </Table.Header>
 
-          <Table.Body data={cabins} render={cabin => <CabinRow cabin={cabin} key={cabin.id} />} />
+          <Table.Body
+            data={sortedCabins}
+            render={cabin => <CabinRow cabin={cabin} key={cabin.id} />}
+          />
         </Table>
       </Menus>
     );

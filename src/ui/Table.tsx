@@ -10,9 +10,9 @@ const StyledTable = styled.div`
   overflow: hidden;
 `;
 
-const CommonRow = styled.div<{ columns: string }>`
+const CommonRow = styled.div<{ $columns: string }>`
   display: grid;
-  grid-template-columns: ${({ columns }) => columns};
+  grid-template-columns: ${({ $columns }) => $columns};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -73,7 +73,7 @@ function Table({ columns, children }: { columns: string; children: React.ReactNo
 function Header({ children }: { children: React.ReactNode }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledHeader role="row" columns={columns} as="header">
+    <StyledHeader role="row" $columns={columns} as="header">
       {children}
     </StyledHeader>
   );
@@ -81,7 +81,7 @@ function Header({ children }: { children: React.ReactNode }) {
 function Row({ children }: { children: React.ReactNode }) {
   const { columns } = useContext(TableContext);
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" $columns={columns}>
       {children}
     </StyledRow>
   );
