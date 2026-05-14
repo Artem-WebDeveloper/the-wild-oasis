@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom';
-import type { Cabin } from '../../schemas/cabin.schema';
+import type { Cabin } from '../../../schemas/cabin.schema';
 
 function sortByField<T>(arr: T[], field: keyof T, direction: 'asc' | 'desc') {
   const modifier = direction === 'asc' ? 1 : -1;

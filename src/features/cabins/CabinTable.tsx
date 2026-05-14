@@ -2,9 +2,10 @@ import Spinner from '../../ui/Spinner';
 import CabinRow from './CabinRow';
 import Table from '../../ui/Table';
 import Menus from '../../ui/Menus';
-import useFilterCabinTables from './useFilterCabinTables';
-import useSortTableCabins from './useSortTableCabins';
+
 import Empty from '../../ui/Empty';
+import useFilterCabinTables from './hooks/useFilterCabinTables';
+import useSortTableCabins from './hooks/useSortTableCabins';
 
 function CabinTable() {
   // 1) FILTER

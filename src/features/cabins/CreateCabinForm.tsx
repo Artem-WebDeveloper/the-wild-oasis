@@ -8,8 +8,8 @@ import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 import type { Cabin } from '../../schemas/cabin.schema';
 import type { CabinFormValues } from '../../types/cabin.types';
-import { useCreateCabin } from './useCreateCabin';
-import { useUpdateCabin } from './useUpdateCabin';
+import { useCreateCabin } from './hooks/useCreateCabin';
+import { useUpdateCabin } from './hooks/useUpdateCabin';
 
 type CreateCabinFormProps = {
   cabinToEdit?: Cabin | null;
