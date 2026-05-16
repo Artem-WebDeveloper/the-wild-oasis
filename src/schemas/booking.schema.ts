@@ -1,4 +1,11 @@
 import z from 'zod';
+import {
+  BOOKING_SORT_DIRECTIONS,
+  BOOKING_SORT_FIELDS,
+  BOOKING_STATUSES,
+} from '../features/bookings/types';
+import { GuestSchema } from './guest.schema';
+import { CabinSchema } from './cabin.schema';
 
 export const BookingSchema = z.object({
   id: z.number(),
@@ -21,7 +28,7 @@ export const BookingSchema = z.object({
     .string()
     .nullable()
     .transform(val => val ?? ''),
-  status: z.enum(['unconfirmed', 'checked-in', 'checked-out']).catch('unconfirmed'),
+  status: z.enum(BOOKING_STATUSES).catch('unconfirmed'),
   totalPrice: z.number().catch(0),
   startDate: z.string(),
   endDate: z.string(),
@@ -37,21 +44,22 @@ export const BookingSchemaTable = BookingSchema.pick({
   status: true,
   totalPrice: true,
 }).extend({
-  cabins: z.object({ name: z.string() }),
-  guests: z.object({ email: z.string(), fullName: z.string() }),
+  cabins: CabinSchema.pick({ name: true }),
+  guests: GuestSchema.pick({ email: true, fullName: true }),
 });
 
 export const BookingSchemaBox = BookingSchema.extend({
-  cabins: z.object({ name: z.string() }),
-  guests: z.object({
-    email: z.string(),
-    fullName: z.string(),
-    country: z.string(),
-    countryFlag: z.string(),
-    nationalID: z.string(),
-  }),
+  cabins: CabinSchema,
+  guests: GuestSchema,
 });
 
 export type Booking = z.infer<typeof BookingSchema>;
 export type BookingTable = z.infer<typeof BookingSchemaTable>;
 export type BookingBox = z.infer<typeof BookingSchemaBox>;
+
+export const BookingStatusSchema = z.enum(BOOKING_STATUSES);
+
+export const BookingSortingSchema = z.object({
+  field: z.enum(BOOKING_SORT_FIELDS),
+  direction: z.enum(BOOKING_SORT_DIRECTIONS),
+});
