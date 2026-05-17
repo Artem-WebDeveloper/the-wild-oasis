@@ -48,6 +48,11 @@ function Filter({ filterField, options }: FilterProps) {
 
   function handleClick(value: string) {
     searchParams.set(filterField, value);
+
+    if (searchParams.get('page')) {
+      searchParams.set('page', String(1));
+    }
+
     setSearchParams(searchParams);
   }
 
