@@ -16,8 +16,8 @@ function useLogin() {
     mutationFn: ({ email, password }: Login) => loginApi({ email, password }),
 
     onSuccess: data => {
-      queryClient.setQueryData(['user'], data.user);
-      navigate('/dashboard');
+      queryClient.setQueryData(['user'], data.user); // Сохраняем в кэш, избегая лишней проверки
+      navigate('/dashboard', { replace: true });
     },
 
     onError: error => {
