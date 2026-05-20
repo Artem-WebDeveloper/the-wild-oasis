@@ -77,3 +77,9 @@ export const BookingStaysAfterDateSchema = BookingSchema.extend({
 });
 
 export type BookingStaysAfterDateType = z.infer<typeof BookingStaysAfterDateSchema>;
+
+export const BookingActivitySchema = BookingSchema.extend({
+  guests: GuestSchema.pick({ fullName: true, nationality: true, countryFlag: true }),
+});
+
+export type BookingActivityType = z.infer<typeof BookingActivitySchema>;

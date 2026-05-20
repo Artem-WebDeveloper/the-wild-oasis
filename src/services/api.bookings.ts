@@ -1,6 +1,7 @@
 import supabase from './supabase';
 import type { BookingStatus, FilterParams, SortingParams } from '../features/bookings/types';
 import {
+  BookingActivitySchema,
   BookingsAfterDateSchema,
   BookingSchemaBox,
   BookingSchemaTable,
@@ -123,7 +124,7 @@ export async function getStaysTodayActivity() {
     console.error(error);
     throw new Error('Bookings could not get loaded');
   }
-  return data;
+  return BookingActivitySchema.array().parse(data);
 }
 
 export async function updateBooking(
