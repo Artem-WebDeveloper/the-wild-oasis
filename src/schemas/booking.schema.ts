@@ -63,3 +63,17 @@ export const BookingSortingSchema = z.object({
   field: z.enum(BOOKING_SORT_FIELDS),
   direction: z.enum(BOOKING_SORT_DIRECTIONS),
 });
+
+export const BookingsAfterDateSchema = BookingSchema.pick({
+  created_at: true,
+  extrasPrice: true,
+  totalPrice: true,
+});
+
+export type BookingsAfterDateType = z.infer<typeof BookingsAfterDateSchema>;
+
+export const BookingStaysAfterDateSchema = BookingSchema.extend({
+  guests: GuestSchema.pick({ fullName: true }),
+});
+
+export type BookingStaysAfterDateType = z.infer<typeof BookingStaysAfterDateSchema>;
