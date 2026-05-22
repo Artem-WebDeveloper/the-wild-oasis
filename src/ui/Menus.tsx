@@ -107,6 +107,7 @@ function Toggle({ id }: { id: number }) {
   const { open, close, openId, setPosition } = useMenu();
 
   function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
     const rect = e.currentTarget.getBoundingClientRect();
     if (!rect) return;
 
@@ -130,7 +131,7 @@ function Toggle({ id }: { id: number }) {
 }
 function List({ id, children }: { id: number; children: React.ReactNode }) {
   const { openId, position, close } = useMenu();
-  const { ref } = useOutsideClick<HTMLUListElement>(close);
+  const { ref } = useOutsideClick<HTMLUListElement>(close, false);
 
   useEffect(
     function () {
