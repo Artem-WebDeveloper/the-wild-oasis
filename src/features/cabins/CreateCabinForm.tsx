@@ -30,8 +30,6 @@ function CreateCabinForm({ cabinToEdit = null, onCloseModal }: CreateCabinFormPr
   });
   const { errors } = formState;
 
-  // console.log(errors);
-
   function onSubmit(data: CabinFormValues) {
     const image = data.image instanceof FileList ? data.image[0] : data.image;
 
