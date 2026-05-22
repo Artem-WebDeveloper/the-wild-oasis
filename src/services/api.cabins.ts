@@ -1,5 +1,5 @@
 import { CabinSchema, type Cabin } from '../schemas/cabin.schema';
-import type { CabinPayload } from '../types/cabin.types';
+import type { CabinPayload } from '../features/cabins/types';
 import supabase, { supabaseUrl } from './supabase';
 
 export async function getCabins(): Promise<Cabin[]> {
