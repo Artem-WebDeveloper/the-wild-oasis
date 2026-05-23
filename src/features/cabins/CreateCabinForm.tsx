@@ -7,7 +7,7 @@ import FileInput from '../../ui/FileInput';
 import Textarea from '../../ui/Textarea';
 import FormRow from '../../ui/FormRow';
 import type { Cabin } from '../../schemas/cabin.schema';
-import type { CabinFormValues } from '../../types/cabin.types';
+import type { CabinFormValues } from './types';
 import { useCreateCabin } from './hooks/useCreateCabin';
 import { useUpdateCabin } from './hooks/useUpdateCabin';
 
