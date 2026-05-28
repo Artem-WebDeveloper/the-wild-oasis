@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { BookingSortingSchema, BookingStatusSchema } from '../../schemas/booking.schema';
 import type { FilterParams } from './types';
 import { PAGE_SIZE } from '../../utils/constants';
+import { useEffect } from 'react';
 
 function useBookings() {
   const queryClient = useQueryClient();
@@ -35,19 +36,21 @@ function useBookings() {
   // PRE-FETCHING
   const pageCount = Math.ceil(Number(count) / PAGE_SIZE);
 
-  if (page < pageCount) {
-    queryClient.prefetchQuery({
-      queryKey: ['bookings', filter, sortBy, page + 1],
-      queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
-    });
-  }
+  useEffect(() => {
+    if (page < pageCount) {
+      queryClient.prefetchQuery({
+        queryKey: ['bookings', filter, sortBy, page + 1],
+        queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
+      });
+    }
 
-  if (page > 1) {
-    queryClient.prefetchQuery({
-      queryKey: ['bookings', filter, sortBy, page + 1],
-      queryFn: () => getBookings({ filter, sortBy, page: page + 1 }),
-    });
-  }
+    if (page > 1) {
+      queryClient.prefetchQuery({
+        queryKey: ['bookings', filter, sortBy, page - 1],
+        queryFn: () => getBookings({ filter, sortBy, page: page - 1 }),
+      });
+    }
+  }, [page, pageCount, filter, sortBy, queryClient]);
 
   return { bookings, isLoading, error, count };
 }
